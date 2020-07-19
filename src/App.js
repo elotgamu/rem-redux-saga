@@ -1,8 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useCallback } from "react";
+import { connect } from "react-redux";
+import logo from "./logo.svg";
+import "./App.css";
 
-function App() {
+import { getUsersRequest } from "./actions/users";
+
+function App({ getUsersRequest }) {
+  const requestUserCallback = useCallback(() => {
+    getUsersRequest();
+  }, [getUsersRequest]);
+
+  useEffect(() => {
+    requestUserCallback();
+  }, [requestUserCallback]);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -23,4 +34,6 @@ function App() {
   );
 }
 
-export default App;
+export default connect(null, {
+  getUsersRequest,
+})(App);
