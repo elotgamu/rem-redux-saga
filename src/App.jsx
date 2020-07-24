@@ -6,9 +6,13 @@ import UsersList from "./components/UsersList";
 import logo from "./logo.svg";
 import "./App.css";
 
-import { getUsersRequest } from "./actions/users";
+import {
+  getUsersRequest,
+  createUserRequest,
+  deleteUserRequest,
+} from "./actions/users";
 
-function App({ getUsersRequest, items }) {
+function App({ getUsersRequest, items, createUserRequest, deleteUserRequest }) {
   const requestUserCallback = useCallback(() => {
     getUsersRequest();
   }, [getUsersRequest]);
@@ -26,8 +30,11 @@ function App({ getUsersRequest, items }) {
       </header>
 
       <section style={{ margin: "0 auto", padding: "20px", maxWidth: "600px" }}>
-        <CreateUserForm></CreateUserForm>
-        <UsersList users={items}></UsersList>
+        <CreateUserForm createAction={createUserRequest}></CreateUserForm>
+        <UsersList
+          users={items}
+          deleteUserAction={deleteUserRequest}
+        ></UsersList>
       </section>
     </div>
   );
@@ -35,4 +42,6 @@ function App({ getUsersRequest, items }) {
 
 export default connect(({ users }) => users, {
   getUsersRequest,
+  createUserRequest,
+  deleteUserRequest,
 })(App);

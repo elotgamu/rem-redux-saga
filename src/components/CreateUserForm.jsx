@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
-const CreateUserForm = (props) => {
+const CreateUserForm = ({ createAction }) => {
   const [userData, setUserData] = useState({ firstName: "", lastName: "" });
 
   const handleChange = (e) => {
@@ -14,7 +14,12 @@ const CreateUserForm = (props) => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(userData);
+
+    //call to action creator and params
+    createAction({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+    });
     resetForm();
   };
 
