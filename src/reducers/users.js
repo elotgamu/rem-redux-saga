@@ -2,6 +2,7 @@ import { Types } from "../actions/users";
 
 const INITIAL_STATE = {
   items: [],
+  error: null,
 };
 
 const users = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,13 @@ const users = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         items: action.payload.items,
+        error: null,
+      };
+
+    case Types.USERS_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
       };
 
     default:

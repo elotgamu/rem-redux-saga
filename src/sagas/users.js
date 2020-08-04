@@ -7,7 +7,7 @@ import {
   put,
 } from "redux-saga/effects";
 
-import { Types, getUsersSuccess } from "../actions/users";
+import { Types, getUsersSuccess, userError } from "../actions/users";
 import * as api from "../api/users";
 
 function* getUsers() {
@@ -16,7 +16,7 @@ function* getUsers() {
     const { data } = results;
     yield put(getUsersSuccess({ items: data.data }));
   } catch (error) {
-    alert(error.message);
+    yield put(userError("An error ocurred when trying to get the users list"));
   }
 }
 
@@ -26,7 +26,7 @@ function* createUser(action) {
     yield call(api.createUser, { firstName, lastName }); //calling the api method
     yield call(getUsers); //refreshing the list
   } catch (error) {
-    alert(error.message);
+    yield put(userError("An error ocurred when trying to create the user"));
   }
 }
 
@@ -34,9 +34,8 @@ function* deleteUser({ userId }) {
   try {
     yield call(api.deleteUser, { userId });
   } catch (error) {
-    alert(error.message);
+    yield put(userError("An error ocurred when trying to delete the user"));
   }
-  yield;
 }
 
 function* watchGetUsersRequest() {

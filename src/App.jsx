@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { connect } from "react-redux";
+import { Alert } from "reactstrap";
 
 import CreateUserForm from "./components/CreateUserForm";
 import UsersList from "./components/UsersList";
@@ -10,9 +11,17 @@ import {
   getUsersRequest,
   createUserRequest,
   deleteUserRequest,
+  userError,
 } from "./actions/users";
 
-function App({ getUsersRequest, items, createUserRequest, deleteUserRequest }) {
+function App({
+  error,
+  items,
+  getUsersRequest,
+  createUserRequest,
+  deleteUserRequest,
+  userError,
+}) {
   const requestUserCallback = useCallback(() => {
     getUsersRequest();
   }, [getUsersRequest]);
@@ -20,6 +29,10 @@ function App({ getUsersRequest, items, createUserRequest, deleteUserRequest }) {
   useEffect(() => {
     requestUserCallback();
   }, [requestUserCallback]);
+
+  const handleAlertClose = () => {
+    userError(null);
+  };
 
   return (
     <div className="App">
@@ -30,6 +43,9 @@ function App({ getUsersRequest, items, createUserRequest, deleteUserRequest }) {
       </header>
 
       <section style={{ margin: "0 auto", padding: "20px", maxWidth: "600px" }}>
+        <Alert isOpen={!!error} color="danger" toggle={handleAlertClose}>
+          {error}
+        </Alert>
         <CreateUserForm createAction={createUserRequest}></CreateUserForm>
         <UsersList
           users={items}
@@ -44,4 +60,5 @@ export default connect(({ users }) => users, {
   getUsersRequest,
   createUserRequest,
   deleteUserRequest,
+  userError,
 })(App);
